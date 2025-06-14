@@ -16,13 +16,20 @@
  */
 package com.hmily.tcc.demo.springcloud.account;
 
+import com.hmily.tcc.demo.springcloud.account.config.RequestMaxSizeFilter;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -39,5 +46,27 @@ public class SpringcloudTccAccountApplication {
         SpringApplication.run(SpringcloudTccAccountApplication.class, args);
     }
 
+    @Bean
+    public FilterRegistrationBean<RequestMaxSizeFilter> requestSizeFilter() {
+        FilterRegistrationBean<RequestMaxSizeFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new RequestMaxSizeFilter(1024L * 1024L));
+        registrationBean.addUrlPatterns("/*");
+        return registrationBean;
+    }
 
+    @Bean
+    public RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory);
+
+        // 设置 key 的序列化器为 StringRedisSerializer
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setHashKeySerializer(new StringRedisSerializer());
+
+        // 设置 value 的序列化器（可以根据需要选择其他序列化器）
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+
+        return template;
+    }
 }

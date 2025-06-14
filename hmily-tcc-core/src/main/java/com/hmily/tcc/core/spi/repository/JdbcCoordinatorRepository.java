@@ -93,7 +93,8 @@ public class JdbcCoordinatorRepository implements CoordinatorRepository {
 
     @Override
     public int remove(final String id) {
-        String sql = "delete from " + tableName + " where trans_id = ? ";
+        //String sql = "delete from " + tableName + " where trans_id = ? ";
+        String sql = "update " + tableName + " set is_deleted=1 where trans_id = ? ";
         return executeUpdate(sql, id);
     }
 
@@ -164,7 +165,7 @@ public class JdbcCoordinatorRepository implements CoordinatorRepository {
     @Override
     @SuppressWarnings("unchecked")
     public List<TccTransaction> listAllByDelay(final Date date) {
-        String sb = "select * from " + tableName + " where last_time <?";
+        String sb = "select * from " + tableName + " where last_time <? and is_deleted=0";
         List<Map<String, Object>> list = executeQuery(sb, date);
         if (CollectionUtils.isNotEmpty(list)) {
             return list.stream().filter(Objects::nonNull)

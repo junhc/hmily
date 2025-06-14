@@ -56,6 +56,7 @@ public class SqlHelper {
                         .append("  `invocation` longblob,")
                         .append("  `role` tinyint NOT NULL,")
                         .append("  `pattern` tinyint,")
+                        .append("  `is_deleted` tinyint NOT NULL DEFAULT '0',")
                         .append("  PRIMARY KEY (`trans_id`))");
                 break;
             case CommonConstant.DB_ORACLE:

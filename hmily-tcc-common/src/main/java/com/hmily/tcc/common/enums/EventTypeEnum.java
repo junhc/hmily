@@ -19,6 +19,9 @@ package com.hmily.tcc.common.enums;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * The enum Coordinator action enum.
  *
@@ -51,5 +54,11 @@ public enum EventTypeEnum {
     private final int code;
 
     private final String desc;
+
+    public static EventTypeEnum acquireByCode(final int code) {
+        return Arrays.stream(EventTypeEnum.values())
+                .filter(v -> Objects.equals(v.getCode(), code))
+                .findFirst().orElse(EventTypeEnum.SAVE);
+    }
 
 }

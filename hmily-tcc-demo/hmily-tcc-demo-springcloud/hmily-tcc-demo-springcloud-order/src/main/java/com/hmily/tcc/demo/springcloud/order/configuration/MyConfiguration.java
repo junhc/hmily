@@ -29,6 +29,7 @@ import org.springframework.context.annotation.Scope;
 
 /**
  * MyConfiguration.
+ *
  * @author xiaoyu
  */
 @Configuration
@@ -55,7 +56,7 @@ public class MyConfiguration {
 
     @Bean
     Request.Options feignOptions() {
-        return new Request.Options(5000, 5000);
+        return new Request.Options(600000, 600000);
     }
 
     @Bean

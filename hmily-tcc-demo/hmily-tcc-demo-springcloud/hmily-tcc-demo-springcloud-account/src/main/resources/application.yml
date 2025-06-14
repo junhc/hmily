@@ -1,18 +1,30 @@
 server:
-  port: 8882
+  port: 8087
   address: 0.0.0.0
   servlet:
-    context-path: /account-service
+    context-path: /
 
 
 spring:
     datasource:
         driver-class-name:  com.mysql.jdbc.Driver
-        url: jdbc:mysql://192.168.1.98:3306/tcc_account?useUnicode=true&characterEncoding=utf8
+        url: jdbc:mysql://127.0.0.1:3306/tcc_account?useUnicode=true&characterEncoding=utf8
         username: root
         password: 123456
     application:
       name: account-service
+    redis:
+      host: localhost
+      port: 6379
+      password:
+      database: 0
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
 
 hmily:
     tcc :
@@ -24,7 +36,7 @@ hmily:
         repositorySupport : db
         tccDbConfig :
                  driverClassName  : com.mysql.jdbc.Driver
-                 url :  jdbc:mysql://192.168.1.98:3306/tcc?useUnicode=true&amp;characterEncoding=utf8
+                 url :  jdbc:mysql://127.0.0.1:3306/tcc?useUnicode=true&amp;characterEncoding=utf8
                  username : root
                  password : 123456
 
