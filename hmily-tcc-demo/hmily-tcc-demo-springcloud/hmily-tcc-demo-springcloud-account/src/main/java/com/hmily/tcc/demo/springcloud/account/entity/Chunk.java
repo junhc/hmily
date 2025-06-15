@@ -17,9 +17,6 @@ import java.util.Optional;
  * Version:
  */
 public class Chunk implements Serializable {
-    private static final String CHUNK_KEY_PREFIX = "json:chunk:";
-    private static final String PROGRESS_KEY_PREFIX = "json:progress:";
-
     private String prefix;
     private String uuid;
     private Integer index;
@@ -28,7 +25,7 @@ public class Chunk implements Serializable {
     private Long length;
 
     public String getPrefix() {
-        return Optional.ofNullable(this.getPrefix()).orElse("json");
+        return Optional.ofNullable(this.prefix).orElse("json");
     }
 
     public void setPrefix(String prefix) {
@@ -87,19 +84,19 @@ public class Chunk implements Serializable {
         return StringUtils.join(values, ":");
     }
 
-    public static Chunk of(String prefix, String uuid, Integer index) {
-        Chunk chunk = new Chunk();
-        chunk.setPrefix(prefix);
-        chunk.setUuid(uuid);
-        chunk.setIndex(index);
-        return chunk;
+    public static Chunk of(String uuid) {
+        return of(null, uuid, 1);
     }
 
     public static Chunk of(String uuid, Integer index) {
         return of(null, uuid, index);
     }
 
-    public static Chunk of(String uuid) {
-        return of(null, uuid, null);
+    public static Chunk of(String prefix, String uuid, Integer index) {
+        Chunk chunk = new Chunk();
+        chunk.setPrefix(prefix);
+        chunk.setUuid(uuid);
+        chunk.setIndex(index);
+        return chunk;
     }
 }
